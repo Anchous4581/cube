@@ -1,6 +1,6 @@
 import pygame
-from object import *
-from map import *
+from object import Grid, Wall, Player  # Импортируем только нужные классы
+from map import initialize_map, walls, players, map_width, map_height
 
 pygame.init()
 
@@ -37,9 +37,10 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-grid = Grid(800, 600)
+grid_size = [current_resolution[0] / map_width, current_resolution[1] / map_height]
+grid = Grid(current_resolution[0], current_resolution[1], grid_size, map_width, map_height)
 
-initialize_map(grid)
+initialize_map(grid, grid_size)  # Инициализация карты
 
 running = True
 while running:
@@ -80,7 +81,7 @@ while running:
 
     # Обновление и отрисовка всех игроков
     for player in players:
-        player.update(events)  # Передаем список событий
+        player.update(events, grid_size)  # Передаем список событий
         player.draw(virtual_surface)
 
     # Отрисовка
